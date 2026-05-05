@@ -1,0 +1,745 @@
+<!DOCTYPE html>
+<html lang="kk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Ерен Рсалдықызы — Бір жылдық Ас</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap');
+
+  :root {
+    --gold: #B8860B;
+    --gold-light: #D4A843;
+    --gold-pale: #E8C97A;
+    --cream: #F5EDD8;
+    --cream-dark: #EDE0C4;
+    --beige: #D4C5A9;
+    --brown-dark: #2C1A0A;
+    --brown-mid: #5C3D1E;
+    --brown-light: #8B6340;
+    --text-main: #2C1A0A;
+    --text-secondary: #5C3D1E;
+    --bg-slide: #F9F3E5;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html, body {
+    width: 100%; height: 100%;
+    overflow: hidden;
+    font-family: 'Cormorant Garamond', serif;
+    background: var(--brown-dark);
+    color: var(--text-main);
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  /* ── SLIDESHOW CONTAINER ── */
+  #slideshow {
+    width: 100%; height: 100%;
+    position: relative;
+    overflow: hidden;
+    touch-action: pan-y;
+  }
+
+  .slide {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: var(--bg-slide);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.9s cubic-bezier(0.4,0,0.2,1);
+    overflow: hidden;
+    padding: 0;
+  }
+
+  .slide.active {
+    opacity: 1;
+    pointer-events: all;
+  }
+
+  /* ── ORNAMENT SVG CORNERS ── */
+  .corner-ornament {
+    position: absolute;
+    width: clamp(70px, 14vw, 130px);
+    height: clamp(70px, 14vw, 130px);
+    pointer-events: none;
+    opacity: 0.72;
+  }
+  .corner-ornament.tl { top: 0; left: 0; }
+  .corner-ornament.tr { top: 0; right: 0; transform: scaleX(-1); }
+  .corner-ornament.bl { bottom: 0; left: 0; transform: scaleY(-1); }
+  .corner-ornament.br { bottom: 0; right: 0; transform: scale(-1,-1); }
+
+  /* ── BORDER FRAME ── */
+  .slide-frame {
+    position: absolute;
+    inset: clamp(12px, 2.5vw, 24px);
+    border: 1.5px solid var(--gold-light);
+    pointer-events: none;
+    opacity: 0.45;
+  }
+  .slide-frame::before {
+    content: '';
+    position: absolute;
+    inset: 4px;
+    border: 0.5px solid var(--gold-pale);
+    opacity: 0.5;
+  }
+
+  /* ── SLIDE CONTENT ── */
+  .slide-inner {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    max-width: 680px;
+    padding: clamp(16px, 4vw, 48px) clamp(20px, 6vw, 60px);
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: clamp(16px, 3.5vw, 32px);
+  }
+
+  /* ── DIVIDER ── */
+  .divider {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    max-width: 320px;
+  }
+  .divider-line {
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(to right, transparent, var(--gold-light), transparent);
+  }
+  .divider-diamond {
+    width: 6px; height: 6px;
+    background: var(--gold);
+    transform: rotate(45deg);
+    flex-shrink: 0;
+  }
+
+  /* ── TYPOGRAPHY ── */
+  .poem-text {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(16px, 3.8vw, 22px);
+    line-height: 2;
+    color: var(--text-main);
+    font-style: italic;
+    font-weight: 300;
+    letter-spacing: 0.03em;
+  }
+  .poem-text p { margin-bottom: 0.15em; }
+
+  .body-text {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(15px, 3.4vw, 19px);
+    line-height: 1.9;
+    color: var(--text-secondary);
+    font-weight: 400;
+  }
+
+  .name-highlight {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(18px, 4.5vw, 26px);
+    font-weight: 700;
+    color: var(--brown-dark);
+    letter-spacing: 0.08em;
+    background: linear-gradient(135deg, var(--gold) 0%, var(--gold-pale) 50%, var(--gold) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    display: inline-block;
+    padding: 2px 8px;
+    border-bottom: 1px solid var(--gold-light);
+    margin: 4px 0;
+  }
+
+  .info-block {
+    background: rgba(184,134,11,0.07);
+    border: 1px solid rgba(184,134,11,0.25);
+    border-radius: 4px;
+    padding: clamp(12px, 3vw, 20px) clamp(16px, 4vw, 28px);
+    width: 100%;
+    max-width: 520px;
+  }
+  .info-line {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(15px, 3.5vw, 19px);
+    font-weight: 700;
+    color: var(--brown-dark);
+    line-height: 2;
+    letter-spacing: 0.03em;
+  }
+  .info-label {
+    font-size: clamp(12px, 2.8vw, 15px);
+    font-weight: 400;
+    color: var(--brown-light);
+    font-style: italic;
+    display: block;
+    margin-bottom: 4px;
+  }
+
+  .final-text {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(15px, 3.6vw, 21px);
+    line-height: 2;
+    color: var(--text-secondary);
+    font-style: italic;
+    font-weight: 300;
+    letter-spacing: 0.04em;
+    max-width: 500px;
+  }
+
+  /* ── PHOTO ── */
+  .photo-container {
+    position: relative;
+    width: clamp(140px, 36vw, 200px);
+    height: clamp(140px, 36vw, 200px);
+    flex-shrink: 0;
+  }
+  .photo-frame-outer {
+    position: absolute;
+    inset: -12px;
+    border: 1.5px solid var(--gold-light);
+    border-radius: 2px;
+    opacity: 0.6;
+  }
+  .photo-frame-inner {
+    position: absolute;
+    inset: -6px;
+    border: 2px solid var(--gold);
+    border-radius: 2px;
+    background: transparent;
+  }
+  /* Kazakh corner ornaments on photo */
+  .photo-frame-inner::before,
+  .photo-frame-inner::after {
+    content: '❖';
+    position: absolute;
+    color: var(--gold);
+    font-size: 14px;
+    line-height: 1;
+  }
+  .photo-frame-inner::before { top: -8px; left: -8px; }
+  .photo-frame-inner::after  { bottom: -8px; right: -8px; }
+
+  .photo-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    filter: sepia(12%) saturate(0.9);
+  }
+  .photo-placeholder {
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, var(--cream-dark), var(--beige));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: clamp(36px, 10vw, 60px);
+    opacity: 0.4;
+  }
+
+  /* ── NAVIGATION ── */
+  .nav-dots {
+    position: fixed;
+    right: clamp(10px, 2.5vw, 20px);
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 100;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    border: 1.5px solid var(--gold);
+    background: transparent;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    padding: 0;
+  }
+  .dot.active {
+    background: var(--gold);
+    transform: scale(1.35);
+  }
+
+  .nav-arrows {
+    position: fixed;
+    bottom: clamp(18px, 4vw, 32px);
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 100;
+    display: flex;
+    gap: clamp(16px, 4vw, 32px);
+    align-items: center;
+  }
+  .nav-btn {
+    width: clamp(44px, 10vw, 54px);
+    height: clamp(44px, 10vw, 54px);
+    border: 1.5px solid var(--gold-light);
+    background: rgba(245,237,216,0.9);
+    color: var(--gold);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: clamp(18px, 4vw, 22px);
+    transition: all 0.25s ease;
+    border-radius: 2px;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+  }
+  .nav-btn:hover, .nav-btn:active {
+    background: var(--gold);
+    color: var(--cream);
+  }
+
+  .slide-counter {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 13px;
+    color: var(--gold-light);
+    letter-spacing: 0.15em;
+    font-style: italic;
+    min-width: 36px;
+    text-align: center;
+  }
+
+  /* ── MUSIC BUTTON ── */
+  #music-btn {
+    position: fixed;
+    top: clamp(12px, 3vw, 20px);
+    right: clamp(12px, 3vw, 20px);
+    z-index: 200;
+    width: clamp(42px, 10vw, 50px);
+    height: clamp(42px, 10vw, 50px);
+    border: 1.5px solid var(--gold-light);
+    background: rgba(245,237,216,0.92);
+    color: var(--gold);
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: clamp(16px, 4vw, 20px);
+    transition: all 0.25s ease;
+    backdrop-filter: blur(4px);
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+  }
+  #music-btn:hover, #music-btn:active {
+    background: var(--gold);
+    color: var(--cream);
+  }
+
+  /* ── FADE-IN ANIMATION ── */
+  .fade-in-up {
+    opacity: 0;
+    transform: translateY(18px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+  }
+  .slide.active .fade-in-up {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .slide.active .fade-in-up:nth-child(1) { transition-delay: 0.15s; }
+  .slide.active .fade-in-up:nth-child(2) { transition-delay: 0.35s; }
+  .slide.active .fade-in-up:nth-child(3) { transition-delay: 0.55s; }
+  .slide.active .fade-in-up:nth-child(4) { transition-delay: 0.72s; }
+  .slide.active .fade-in-up:nth-child(5) { transition-delay: 0.88s; }
+
+  /* ── DECORATIVE BACKGROUND PATTERN ── */
+  .slide-bg-pattern {
+    position: absolute;
+    inset: 0;
+    opacity: 0.04;
+    background-image:
+      repeating-linear-gradient(45deg, var(--gold) 0, var(--gold) 1px, transparent 0, transparent 50%),
+      repeating-linear-gradient(-45deg, var(--gold) 0, var(--gold) 1px, transparent 0, transparent 50%);
+    background-size: 28px 28px;
+    pointer-events: none;
+  }
+
+  /* ── SLIDE 1 specific ── */
+  #slide-1 { background: linear-gradient(160deg, #FAF4E4 0%, #F2E8CE 60%, #EDE0C4 100%); }
+  #slide-2 { background: linear-gradient(160deg, #F8F2E0 0%, #F0E6CA 70%, #EAD9B8 100%); }
+  #slide-3 { background: linear-gradient(160deg, #F7F1DF 0%, #EEE3C6 70%, #E8D9B2 100%); }
+  #slide-4 { background: linear-gradient(150deg, #F5EDD8 0%, #EBE0C6 100%); }
+
+  /* ── HORIZONTAL BORDER ORNAMENTS ── */
+  .h-ornament {
+    width: 100%;
+    max-width: 400px;
+    height: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    opacity: 0.55;
+  }
+  .h-ornament span {
+    color: var(--gold);
+    font-size: 11px;
+    letter-spacing: 4px;
+  }
+
+  /* ── SLIDE 4 SPECIAL ── */
+  .memorial-emblem {
+    font-size: clamp(28px, 7vw, 42px);
+    color: var(--gold-light);
+    opacity: 0.6;
+    letter-spacing: 0.1em;
+  }
+
+  /* Scrollbar hidden */
+  ::-webkit-scrollbar { display: none; }
+
+  @media (max-height: 600px) {
+    .slide-inner { gap: 10px; padding: 10px 20px; }
+    .poem-text { line-height: 1.7; font-size: 14px; }
+    .photo-container { width: 110px; height: 110px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- MUSIC -->
+<audio id="bg-music" loop preload="auto">
+  <source src="music1.mp3" type="audio/mpeg">
+</audio>
+<button id="music-btn" title="Музыка">🔇</button>
+
+<!-- NAV DOTS -->
+<nav class="nav-dots" aria-label="Навигация">
+  <button class="dot active" data-idx="0" aria-label="Слайд 1"></button>
+  <button class="dot" data-idx="1" aria-label="Слайд 2"></button>
+  <button class="dot" data-idx="2" aria-label="Слайд 3"></button>
+  <button class="dot" data-idx="3" aria-label="Слайд 4"></button>
+</nav>
+
+<!-- NAV ARROWS -->
+<div class="nav-arrows">
+  <button class="nav-btn" id="prev-btn" aria-label="Назад">&#8592;</button>
+  <span class="slide-counter" id="counter">1 / 4</span>
+  <button class="nav-btn" id="next-btn" aria-label="Вперёд">&#8594;</button>
+</div>
+
+<!-- ══════════════════ SLIDESHOW ══════════════════ -->
+<div id="slideshow">
+
+  <!-- ── SLIDE 1 ── -->
+  <div class="slide active" id="slide-1">
+    <div class="slide-bg-pattern"></div>
+    <div class="slide-frame"></div>
+
+    <!-- SVG Corner Ornament TL -->
+    <svg class="corner-ornament tl" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M10 10 L10 50 Q10 60 20 60 L60 60" stroke="#B8860B" stroke-width="1.5" fill="none" opacity="0.6"/>
+      <path d="M10 10 L50 10 Q60 10 60 20 L60 60" stroke="#B8860B" stroke-width="1.5" fill="none" opacity="0.6"/>
+      <circle cx="10" cy="10" r="3" fill="#B8860B" opacity="0.7"/>
+      <circle cx="60" cy="60" r="2.5" fill="#D4A843" opacity="0.6"/>
+      <path d="M18 18 Q35 35 55 18 Q35 35 18 55" stroke="#D4A843" stroke-width="1" fill="none" opacity="0.4"/>
+      <path d="M25 10 Q32 22 25 34" stroke="#B8860B" stroke-width="1" fill="none" opacity="0.35"/>
+      <path d="M10 25 Q22 32 34 25" stroke="#B8860B" stroke-width="1" fill="none" opacity="0.35"/>
+      <circle cx="35" cy="35" r="4" stroke="#D4A843" stroke-width="1" fill="none" opacity="0.4"/>
+      <path d="M35 31 L37 33 L35 39 L33 33 Z" fill="#D4A843" opacity="0.35"/>
+    </svg>
+    <svg class="corner-ornament tr" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M10 10 L10 50 Q10 60 20 60 L60 60" stroke="#B8860B" stroke-width="1.5" fill="none" opacity="0.6"/>
+      <path d="M10 10 L50 10 Q60 10 60 20 L60 60" stroke="#B8860B" stroke-width="1.5" fill="none" opacity="0.6"/>
+      <circle cx="10" cy="10" r="3" fill="#B8860B" opacity="0.7"/>
+      <circle cx="60" cy="60" r="2.5" fill="#D4A843" opacity="0.6"/>
+      <path d="M18 18 Q35 35 55 18 Q35 35 18 55" stroke="#D4A843" stroke-width="1" fill="none" opacity="0.4"/>
+      <path d="M25 10 Q32 22 25 34" stroke="#B8860B" stroke-width="1" fill="none" opacity="0.35"/>
+      <path d="M10 25 Q22 32 34 25" stroke="#B8860B" stroke-width="1" fill="none" opacity="0.35"/>
+      <circle cx="35" cy="35" r="4" stroke="#D4A843" stroke-width="1" fill="none" opacity="0.4"/>
+      <path d="M35 31 L37 33 L35 39 L33 33 Z" fill="#D4A843" opacity="0.35"/>
+    </svg>
+    <svg class="corner-ornament bl" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M10 10 L10 50 Q10 60 20 60 L60 60" stroke="#B8860B" stroke-width="1.5" fill="none" opacity="0.6"/>
+      <path d="M10 10 L50 10 Q60 10 60 20 L60 60" stroke="#B8860B" stroke-width="1.5" fill="none" opacity="0.6"/>
+      <circle cx="10" cy="10" r="3" fill="#B8860B" opacity="0.7"/>
+      <circle cx="60" cy="60" r="2.5" fill="#D4A843" opacity="0.6"/>
+      <path d="M18 18 Q35 35 55 18 Q35 35 18 55" stroke="#D4A843" stroke-width="1" fill="none" opacity="0.4"/>
+      <circle cx="35" cy="35" r="4" stroke="#D4A843" stroke-width="1" fill="none" opacity="0.4"/>
+    </svg>
+    <svg class="corner-ornament br" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M10 10 L10 50 Q10 60 20 60 L60 60" stroke="#B8860B" stroke-width="1.5" fill="none" opacity="0.6"/>
+      <path d="M10 10 L50 10 Q60 10 60 20 L60 60" stroke="#B8860B" stroke-width="1.5" fill="none" opacity="0.6"/>
+      <circle cx="10" cy="10" r="3" fill="#B8860B" opacity="0.7"/>
+      <circle cx="60" cy="60" r="2.5" fill="#D4A843" opacity="0.6"/>
+      <path d="M18 18 Q35 35 55 18 Q35 35 18 55" stroke="#D4A843" stroke-width="1" fill="none" opacity="0.4"/>
+      <circle cx="35" cy="35" r="4" stroke="#D4A843" stroke-width="1" fill="none" opacity="0.4"/>
+    </svg>
+
+    <div class="slide-inner">
+      <div class="h-ornament fade-in-up">
+        <span>✦ ✦ ✦ ✦ ✦</span>
+      </div>
+
+      <div class="poem-text fade-in-up">
+        <p>Анажан, шаңыраққа болдың пана,</p>
+        <p>Жамандық қылмаушы едің ешбір жанға.</p>
+        <p>Амал не, жоқсыз бүгін ортамызда,</p>
+        <p>Сағындық, Ана, Сізді баршамызда...</p>
+      </div>
+
+      <div class="divider fade-in-up">
+        <div class="divider-line"></div>
+        <div class="divider-diamond"></div>
+        <div class="divider-line"></div>
+      </div>
+
+      <div class="photo-container fade-in-up">
+        <div class="photo-frame-outer"></div>
+        <div class="photo-frame-inner"></div>
+        <img src="photo1.jpg" alt="Ерен Рсалдықызы" class="photo-img"
+          onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+        <div class="photo-placeholder" style="display:none;">🕊</div>
+      </div>
+
+      <div class="h-ornament fade-in-up">
+        <span>✦ ✦ ✦ ✦ ✦</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── SLIDE 2 ── -->
+  <div class="slide" id="slide-2">
+    <div class="slide-bg-pattern"></div>
+    <div class="slide-frame"></div>
+
+    <svg class="corner-ornament tl" viewBox="0 0 120 120" fill="none"><path d="M8 8 L8 55 Q8 65 18 65 L65 65" stroke="#B8860B" stroke-width="1.5" fill="none" opacity="0.55"/><path d="M8 8 L55 8 Q65 8 65 18 L65 65" stroke="#B8860B" stroke-width="1.5" fill="none" opacity="0.55"/><circle cx="8" cy="8" r="3" fill="#B8860B" opacity="0.65"/><path d="M20 8 Q28 18 20 28 Q12 38 20 48" stroke="#D4A843" stroke-width="1" fill="none" opacity="0.3"/><path d="M8 20 Q18 28 28 20 Q38 12 48 20" stroke="#D4A843" stroke-width="1" fill="none" opacity="0.3"/><rect x="30" y="30" width="12" height="12" transform="rotate(45 36 36)" stroke="#D4A843" stroke-width="1" fill="none" opacity="0.35"/></svg>
+    <svg class="corner-ornament tr" viewBox="0 0 120 120" fill="none"><path d="M8 8 L8 55 Q8 65 18 65 L65 65" stroke="#B8860B" stroke-width="1.5" fill="none" opacity="0.55"/><path d="M8 8 L55 8 Q65 8 65 18 L65 65" stroke="#B8860B" stroke-width="1.5" fill="none" opacity="0.55"/><circle cx="8" cy="8" r="3" fill="#B8860B" opacity="0.65"/><path d="M20 8 Q28 18 20 28 Q12 38 20 48" stroke="#D4A843" stroke-width="1" fill="none" opacity="0.3"/><path d="M8 20 Q18 28 28 20 Q38 12 48 20" stroke="#D4A843" stroke-width="1" fill="none" opacity="0.3"/><rect x="30" y="30" width="12" height="12" transform="rotate(45 36 36)" stroke="#D4A843" stroke-width="1" fill="none" opacity="0.35"/></svg>
+    <svg class="corner-ornament bl" viewBox="0 0 120 120" fill="none"><path d="M8 8 L8 55 Q8 65 18 65 L65 65" stroke="#B8860B" stroke-width="1.5" fill="none" opacity="0.55"/><path d="M8 8 L55 8 Q65 8 65 18 L65 65" stroke="#B8860B" stroke-width="1.5" fill="none" opacity="0.55"/><circle cx="8" cy="8" r="3" fill="#B8860B" opacity="0.65"/><rect x="30" y="30" width="12" height="12" transform="rotate(45 36 36)" stroke="#D4A843" stroke-width="1" fill="none" opacity="0.35"/></svg>
+    <svg class="corner-ornament br" viewBox="0 0 120 120" fill="none"><path d="M8 8 L8 55 Q8 65 18 65 L65 65" stroke="#B8860B" stroke-width="1.5" fill="none" opacity="0.55"/><path d="M8 8 L55 8 Q65 8 65 18 L65 65" stroke="#B8860B" stroke-width="1.5" fill="none" opacity="0.55"/><circle cx="8" cy="8" r="3" fill="#B8860B" opacity="0.65"/><rect x="30" y="30" width="12" height="12" transform="rotate(45 36 36)" stroke="#D4A843" stroke-width="1" fill="none" opacity="0.35"/></svg>
+
+    <div class="slide-inner">
+      <div class="h-ornament fade-in-up"><span>— ✦ ◆ ✦ —</span></div>
+
+      <div class="body-text fade-in-up" style="text-align:center; max-width:560px;">
+        Қадірлі ағайын-туыс, бауырлар,<br>
+        құда-жекжаттар, дос-жаран, көрші-қолан!
+      </div>
+
+      <div class="divider fade-in-up">
+        <div class="divider-line"></div>
+        <div class="divider-diamond"></div>
+        <div class="divider-line"></div>
+      </div>
+
+      <div class="body-text fade-in-up" style="max-width:540px; text-align:center; line-height:2.1;">
+        Ардақты, аяулы анамыз, сүйікті әжеміз<br>
+        <span class="name-highlight">Ерен Рсалдықызы</span><br>
+        -ның дүниеден өткеніне <strong>1 жыл</strong> толуына орай,<br>
+        Аяулы анамыздың рухына<br>
+        Құран бағыштап <strong>бір жылдық ас береміз.</strong>
+      </div>
+
+      <div class="h-ornament fade-in-up"><span>— ✦ ◆ ✦ —</span></div>
+    </div>
+  </div>
+
+  <!-- ── SLIDE 3 ── -->
+  <div class="slide" id="slide-3">
+    <div class="slide-bg-pattern"></div>
+    <div class="slide-frame"></div>
+
+    <svg class="corner-ornament tl" viewBox="0 0 120 120" fill="none"><path d="M6 6 L6 58 Q6 70 18 70 L70 70" stroke="#B8860B" stroke-width="1.5" fill="none" opacity="0.6"/><path d="M6 6 L58 6 Q70 6 70 18 L70 70" stroke="#B8860B" stroke-width="1.5" fill="none" opacity="0.6"/><circle cx="6" cy="6" r="3.5" fill="#B8860B" opacity="0.7"/><path d="M16 6 Q22 14 16 22 Q10 30 16 38 Q22 46 16 54" stroke="#D4A843" stroke-width="1" fill="none" opacity="0.32"/><path d="M6 16 Q14 22 22 16 Q30 10 38 16 Q46 22 54 16" stroke="#D4A843" stroke-width="1" fill="none" opacity="0.32"/><circle cx="38" cy="38" r="5" stroke="#D4A843" stroke-width="1.2" fill="none" opacity="0.38"/><circle cx="38" cy="38" r="2" fill="#D4A843" opacity="0.3"/></svg>
+    <svg class="corner-ornament tr" viewBox="0 0 120 120" fill="none"><path d="M6 6 L6 58 Q6 70 18 70 L70 70" stroke="#B8860B" stroke-width="1.5" fill="none" opacity="0.6"/><path d="M6 6 L58 6 Q70 6 70 18 L70 70" stroke="#B8860B" stroke-width="1.5" fill="none" opacity="0.6"/><circle cx="6" cy="6" r="3.5" fill="#B8860B" opacity="0.7"/><circle cx="38" cy="38" r="5" stroke="#D4A843" stroke-width="1.2" fill="none" opacity="0.38"/><circle cx="38" cy="38" r="2" fill="#D4A843" opacity="0.3"/></svg>
+    <svg class="corner-ornament bl" viewBox="0 0 120 120" fill="none"><path d="M6 6 L6 58 Q6 70 18 70 L70 70" stroke="#B8860B" stroke-width="1.5" fill="none" opacity="0.6"/><path d="M6 6 L58 6 Q70 6 70 18 L70 70" stroke="#B8860B" stroke-width="1.5" fill="none" opacity="0.6"/><circle cx="6" cy="6" r="3.5" fill="#B8860B" opacity="0.7"/><circle cx="38" cy="38" r="5" stroke="#D4A843" stroke-width="1.2" fill="none" opacity="0.38"/></svg>
+    <svg class="corner-ornament br" viewBox="0 0 120 120" fill="none"><path d="M6 6 L6 58 Q6 70 18 70 L70 70" stroke="#B8860B" stroke-width="1.5" fill="none" opacity="0.6"/><path d="M6 6 L58 6 Q70 6 70 18 L70 70" stroke="#B8860B" stroke-width="1.5" fill="none" opacity="0.6"/><circle cx="6" cy="6" r="3.5" fill="#B8860B" opacity="0.7"/><circle cx="38" cy="38" r="5" stroke="#D4A843" stroke-width="1.2" fill="none" opacity="0.38"/></svg>
+
+    <div class="slide-inner">
+      <div class="h-ornament fade-in-up"><span>◈ ◆ ❖ ◆ ◈</span></div>
+
+      <div class="body-text fade-in-up" style="text-align:center; font-style:italic; max-width:500px;">
+        Анамыздың жатқан жері жарық, жайлы,<br>
+        топырағы торқа, жаны жәнатта болсын.
+      </div>
+
+      <div class="divider fade-in-up">
+        <div class="divider-line"></div>
+        <div class="divider-diamond"></div>
+        <div class="divider-line"></div>
+      </div>
+
+      <div class="info-block fade-in-up">
+        <span class="info-label">Астың өткізілетін уақыты мен орны:</span>
+        <div class="info-line">
+          Ас <strong>2026 жылдың 30 мамыр</strong> күні<br>
+          сағат <strong>13:00-де</strong>
+        </div>
+        <div style="height:10px;"></div>
+        <div class="info-line">
+          <strong>Алматы қаласы</strong><br>
+          <strong>Достық даңгылы 218Б</strong><br>
+          <span style="font-style:italic; font-weight:400; font-size:0.92em; color:#8B6340;">«Достық» мейрамханасында беріледі</span>
+        </div>
+      </div>
+
+      <div class="h-ornament fade-in-up"><span>◈ ◆ ❖ ◆ ◈</span></div>
+    </div>
+  </div>
+
+  <!-- ── SLIDE 4 ── -->
+  <div class="slide" id="slide-4">
+    <div class="slide-bg-pattern"></div>
+    <div class="slide-frame"></div>
+
+    <svg class="corner-ornament tl" viewBox="0 0 120 120" fill="none"><path d="M10 10 L10 50 Q10 62 22 62 L62 62" stroke="#B8860B" stroke-width="1" fill="none" opacity="0.4"/><path d="M10 10 L50 10 Q62 10 62 22 L62 62" stroke="#B8860B" stroke-width="1" fill="none" opacity="0.4"/><circle cx="10" cy="10" r="2.5" fill="#B8860B" opacity="0.45"/><path d="M22 10 Q30 20 22 30" stroke="#D4A843" stroke-width="0.8" fill="none" opacity="0.28"/><path d="M10 22 Q20 30 30 22" stroke="#D4A843" stroke-width="0.8" fill="none" opacity="0.28"/></svg>
+    <svg class="corner-ornament tr" viewBox="0 0 120 120" fill="none"><path d="M10 10 L10 50 Q10 62 22 62 L62 62" stroke="#B8860B" stroke-width="1" fill="none" opacity="0.4"/><path d="M10 10 L50 10 Q62 10 62 22 L62 62" stroke="#B8860B" stroke-width="1" fill="none" opacity="0.4"/><circle cx="10" cy="10" r="2.5" fill="#B8860B" opacity="0.45"/></svg>
+    <svg class="corner-ornament bl" viewBox="0 0 120 120" fill="none"><path d="M10 10 L10 50 Q10 62 22 62 L62 62" stroke="#B8860B" stroke-width="1" fill="none" opacity="0.4"/><path d="M10 10 L50 10 Q62 10 62 22 L62 62" stroke="#B8860B" stroke-width="1" fill="none" opacity="0.4"/><circle cx="10" cy="10" r="2.5" fill="#B8860B" opacity="0.45"/></svg>
+    <svg class="corner-ornament br" viewBox="0 0 120 120" fill="none"><path d="M10 10 L10 50 Q10 62 22 62 L62 62" stroke="#B8860B" stroke-width="1" fill="none" opacity="0.4"/><path d="M10 10 L50 10 Q62 10 62 22 L62 62" stroke="#B8860B" stroke-width="1" fill="none" opacity="0.4"/><circle cx="10" cy="10" r="2.5" fill="#B8860B" opacity="0.45"/></svg>
+
+    <div class="slide-inner">
+      <div class="memorial-emblem fade-in-up">✦ ✦ ✦</div>
+
+      <div class="divider fade-in-up">
+        <div class="divider-line"></div>
+        <div class="divider-diamond"></div>
+        <div class="divider-diamond" style="margin: 0 4px;"></div>
+        <div class="divider-diamond"></div>
+        <div class="divider-line"></div>
+      </div>
+
+      <div class="final-text fade-in-up">
+        Сағынышпен,<br>
+        балалары, немере-шөберелері<br>
+        және анамыздың көзін көрген<br>
+        барша жамағат.
+      </div>
+
+      <div class="divider fade-in-up">
+        <div class="divider-line"></div>
+        <div class="divider-diamond"></div>
+        <div class="divider-diamond" style="margin: 0 4px;"></div>
+        <div class="divider-diamond"></div>
+        <div class="divider-line"></div>
+      </div>
+
+      <div class="memorial-emblem fade-in-up" style="font-size: clamp(18px,4vw,26px); opacity:0.35; letter-spacing:0.3em;">
+        ✦ &nbsp; ✦ &nbsp; ✦
+      </div>
+    </div>
+  </div>
+
+</div><!-- /slideshow -->
+
+<script>
+  // ── STATE ──
+  let current = 0;
+  const total = 4;
+  let isAnimating = false;
+
+  const slides = document.querySelectorAll('.slide');
+  const dots = document.querySelectorAll('.dot');
+  const counter = document.getElementById('counter');
+  const prevBtn = document.getElementById('prev-btn');
+  const nextBtn = document.getElementById('next-btn');
+
+  function goTo(idx) {
+    if (isAnimating || idx === current || idx < 0 || idx >= total) return;
+    isAnimating = true;
+
+    slides[current].classList.remove('active');
+    dots[current].classList.remove('active');
+
+    current = idx;
+
+    slides[current].classList.add('active');
+    dots[current].classList.add('active');
+    counter.textContent = (current + 1) + ' / ' + total;
+
+    setTimeout(() => { isAnimating = false; }, 950);
+  }
+
+  function next() { goTo(current < total - 1 ? current + 1 : current); }
+  function prev() { goTo(current > 0 ? current - 1 : current); }
+
+  nextBtn.addEventListener('click', next);
+  prevBtn.addEventListener('click', prev);
+
+  dots.forEach(d => d.addEventListener('click', () => goTo(+d.dataset.idx)));
+
+  // Keyboard
+  document.addEventListener('keydown', e => {
+    if (e.key === 'ArrowRight' || e.key === 'ArrowDown') next();
+    if (e.key === 'ArrowLeft'  || e.key === 'ArrowUp')   prev();
+  });
+
+  // Wheel / scroll
+  let wheelTimer = null;
+  document.addEventListener('wheel', e => {
+    if (wheelTimer) return;
+    if (e.deltaY > 30) next();
+    else if (e.deltaY < -30) prev();
+    wheelTimer = setTimeout(() => { wheelTimer = null; }, 700);
+  }, { passive: true });
+
+  // Touch / swipe
+  let touchStartX = 0, touchStartY = 0;
+  document.addEventListener('touchstart', e => {
+    touchStartX = e.touches[0].clientX;
+    touchStartY = e.touches[0].clientY;
+  }, { passive: true });
+  document.addEventListener('touchend', e => {
+    const dx = touchStartX - e.changedTouches[0].clientX;
+    const dy = touchStartY - e.changedTouches[0].clientY;
+    if (Math.abs(dy) > Math.abs(dx) + 10) {
+      if (dy > 40) next();
+      else if (dy < -40) prev();
+    } else {
+      if (dx > 40) next();
+      else if (dx < -40) prev();
+    }
+  }, { passive: true });
+
+  // ── MUSIC ──
+  const audio = document.getElementById('bg-music');
+  const musicBtn = document.getElementById('music-btn');
+  let musicPlaying = false;
+
+  function tryPlay() {
+    audio.play().then(() => {
+      musicPlaying = true;
+      musicBtn.textContent = '🔊';
+    }).catch(() => {
+      musicPlaying = false;
+      musicBtn.textContent = '🔇';
+    });
+  }
+
+  // Autoplay on first interaction
+  const startMusic = () => {
+    if (!musicPlaying) tryPlay();
+    document.removeEventListener('click', startMusic);
+    document.removeEventListener('touchstart', startMusic);
+  };
+  document.addEventListener('click', startMusic);
+  document.addEventListener('touchstart', startMusic, { passive: true });
+
+  // Try autoplay immediately
+  tryPlay();
+
+  musicBtn.addEventListener('click', e => {
+    e.stopPropagation();
+    if (musicPlaying) {
+      audio.pause();
+      musicPlaying = false;
+      musicBtn.textContent = '🔇';
+    } else {
+      tryPlay();
+    }
+  });
+</script>
+</body>
+</html>
